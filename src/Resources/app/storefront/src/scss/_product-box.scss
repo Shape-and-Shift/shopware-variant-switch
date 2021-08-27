@@ -1,0 +1,85 @@
+.product-box {
+    .card-body {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.sas-product-configurator-group {
+    margin-bottom: $spacer-md;
+    display: inline-block;
+    margin-right: 5px;
+
+    .custom-select {
+        width: auto;
+    }
+}
+
+.sas-product-configurator-group-title {
+    font-weight: $font-weight-bold;
+    margin-bottom: $spacer-sm;
+}
+
+.sas-product-configurator-options {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.sas-product-configurator-option {
+    display: inline-flex;
+    margin-right: $spacer-sm;
+}
+
+.sas-product-configurator-option-input {
+    display: none;
+
+    + .sas-product-configurator-option-label {
+        align-items: center;
+        cursor: pointer;
+        border: 1px dashed $dark;
+        border-radius: $border-radius;
+        box-shadow: inset 3px 3px 0 $white, inset -3px -3px 0 $white;
+        background-color: $white;
+        display: inline-flex;
+        justify-content: center;
+        height: 60px;
+        min-width: 60px;
+        opacity: 0.35;
+        padding: 3px;
+        transition: border-color 0.45s cubic-bezier(0.3, 0, 0.15, 1), background-color 0.45s cubic-bezier(0.3, 0, 0.15, 1);
+
+        &.is-display-text {
+            box-shadow: none;
+            height: auto;
+            padding: 5px 10px;
+        }
+    }
+
+    &.is-combinable + .sas-product-configurator-option-label {
+        opacity: 1;
+        border: 1px solid $border-color;
+    }
+
+    &:checked + .sas-product-configurator-option-label {
+        border: 1px solid $primary;
+
+        &.is-display-text {
+            background-color: $primary;
+            color: $white;
+        }
+    }
+
+    &.is-combinable + .sas-product-configurator-option-label,
+    + .sas-product-configurator-option-label {
+        &:hover,
+        &:active,
+        &:focus {
+            border: 1px solid $primary;
+        }
+    }
+}
+
+.sas-product-configurator-option-image {
+    height: 100%;
+}

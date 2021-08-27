@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="SasVariantSwitch\Storefront\Page\ProductListingConfigurationLoader">
+            <argument type="service" id="product_configurator_setting.repository"/>
+            <argument type="service" id="Doctrine\DBAL\Connection"/>
+        </service>
+
+        <service id="SasVariantSwitch\Subscriber\ProductListingResultLoadedSubscriber">
+            <argument type="service" id="SasVariantSwitch\Storefront\Page\ProductListingConfigurationLoader"/>
+            <argument type="service" id="Shopware\Core\System\SystemConfig\SystemConfigService"/>
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="SasVariantSwitch\Subscriber\CartPageLoadedSubscriber">
+            <argument type="service" id="sales_channel.product.repository"/>
+            <argument type="service" id="SasVariantSwitch\Storefront\Page\ProductListingConfigurationLoader"/>
+            <argument type="service" id="Shopware\Core\System\SystemConfig\SystemConfigService"/>
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="SasVariantSwitch\Storefront\Controller\VariantSwitchController" public="true">
+            <argument type="service" id="Shopware\Storefront\Page\Product\Configurator\ProductCombinationFinder"/>
+            <argument type="service" id="sales_channel.product.repository"/>
+            <argument type="service" id="Shopware\Core\Checkout\Cart\SalesChannel\CartService"/>
+            <argument type="service" id="Shopware\Core\Checkout\Cart\LineItemFactoryRegistry"/>
+            <argument type="service" id="event_dispatcher"/>
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
+        </service>
+    </services>
+</container>

@@ -1,0 +1,28 @@
+{% sw_extends '@Storefront/storefront/page/checkout/confirm/confirm-item.html.twig' %}
+
+{% block page_checkout_item_info_variant_characteristics %}
+    {% if lineItem.type != 'product' or not config('SasVariantSwitch.config.showOnCheckoutConfirmPage') %}
+        <div class="cart-item-details-characteristics">
+
+            {% for option in lineItem.payload.options %}
+                {{ option.group }}:
+                <span class="cart-item-details-characteristics-option">{{ option.option }}</span>
+
+                {% if lineItem.payload.options|last != option %}
+                    {{ " | " }}
+                {% endif %}
+            {% endfor %}
+
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block page_checkout_item_info_features_variant_switch_container %}
+    {% if lineItem.type == 'product' and config('SasVariantSwitch.config.showOnCheckoutConfirmPage') %}
+
+        {% block page_checkout_item_info_features_variant_switch %}
+            {{ parent() }}
+        {% endblock %}
+
+    {% endif %}
+{% endblock %}

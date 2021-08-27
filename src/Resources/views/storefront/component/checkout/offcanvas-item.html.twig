@@ -1,0 +1,57 @@
+{% sw_extends '@Storefront/storefront/component/checkout/offcanvas-item.html.twig' %}
+
+{% block cart_item_variant_characteristics %}
+    {% if lineItem.type != 'product' or not config('SasVariantSwitch.config.showOnOffCanvasCart') %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block component_offcanvas_product_details_features %}
+    {{ parent() }}
+    {% if lineItem.type == 'product' and config('SasVariantSwitch.config.showOnOffCanvasCart') %}
+        {% block component_offcanvas_product_details_variant_switch %}
+            {% if lineItem.extensions.groups %}
+                {% set optionIds = lineItem.payload.optionIds %}
+                {% set parentId = lineItem.payload.parentId %}
+
+                <div data-wrapper-id="sas-product-configurator-group-wrapper-{{ lineItem.referencedId }}" data-variant-cart-switch="true">
+                    <form action="{{ path('sas.frontend.lineItem.variant.switch', {'id': lineItem.id}) }}" method="post">
+
+                        {% block component_offcanvas_product_details_variant_switch_form_csrf %}
+                            {{ sw_csrf('sas.frontend.lineItem.variant.switch') }}
+                        {% endblock %}
+
+                        {% block component_offcanvas_product_details_variant_switch_form_redirect %}
+                            <input type="hidden"
+                                   name="redirectTo"
+                                   value="frontend.cart.offcanvas"/>
+                        {% endblock %}
+
+                        {% block component_offcanvas_product_details_variant_switch_parent_id %}
+                            <input type="hidden"
+                                   name="parentId"
+                                   value="{{ parentId }}"/>
+                        {% endblock %}
+
+                        {% block component_offcanvas_product_details_variant_switch_switched %}
+                            <input type="hidden"
+                                   class="form-switched"
+                                   name="switched"/>
+                        {% endblock %}
+
+                        {% for group in lineItem.extensions.groups %}
+                            {% set groupIdentifier = [lineItem.referencedId, group.id]|join('-') %}
+
+                            {% block component_offcanvas_product_details_variant_switch_configurator_group %}
+                                <div class="sas-product-configurator-group">
+                                    {% sw_include '@Storefront/storefront/component/checkout/group/box-card-group-select.html.twig' %}
+                                </div>
+                            {% endblock %}
+                        {% endfor %}
+                    </form>
+                </div>
+            {% endif %}
+        {% endblock %}
+    {% endif %}
+{% endblock %}
+

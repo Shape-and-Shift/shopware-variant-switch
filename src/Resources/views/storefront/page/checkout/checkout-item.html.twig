@@ -1,0 +1,63 @@
+{% sw_extends '@Storefront/storefront/page/checkout/checkout-item.html.twig' %}
+
+{% block page_checkout_item_info_variant_characteristics %}
+    {% if lineItem.type != 'product' or not config('SasVariantSwitch.config.showOnCartPage') %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block page_checkout_item_info_features %}
+    {{ parent() }}
+
+    {% block page_checkout_item_info_features_variant_switch_container %}
+
+        {% if lineItem.type == 'product' and config('SasVariantSwitch.config.showOnCartPage') %}
+
+            {% block page_checkout_item_info_features_variant_switch %}
+                {% if lineItem.extensions.groups %}
+                    {% set optionIds = lineItem.payload.optionIds %}
+                    {% set parentId = lineItem.payload.parentId %}
+
+                    <div data-wrapper-id="sas-product-configurator-group-wrapper-{{ lineItem.referencedId }}" data-variant-cart-switch="true">
+                        <form action="{{ path('sas.frontend.lineItem.variant.switch', {'id': lineItem.id}) }}" method="post" data-form-auto-submit="true">
+
+                            {% block page_checkout_item_info_features_variant_switch_form_csrf %}
+                                {{ sw_csrf('sas.frontend.lineItem.variant.switch') }}
+                            {% endblock %}
+
+                            {% block page_checkout_item_quantity_redirect %}
+                                <input type="hidden"
+                                       name="redirectTo"
+                                       value="frontend.checkout.cart.page">
+                            {% endblock %}
+
+                            {% block page_checkout_item_info_features_variant_switch_parent_id %}
+                                <input type="hidden"
+                                       name="parentId"
+                                       value="{{ parentId }}"/>
+                            {% endblock %}
+
+                            {% block page_checkout_item_info_features_variant_switch_switched %}
+                                <input type="hidden"
+                                       value="{{ group.id }}"
+                                       class="form-switched"
+                                       name="switched"/>
+                            {% endblock %}
+
+                            {% for group in lineItem.extensions.groups %}
+                                {% set groupIdentifier = [lineItem.referencedId, group.id]|join('-') %}
+
+                                {% block page_checkout_item_info_features_variant_switch_configurator_group %}
+                                    <div class="sas-product-configurator-group">
+                                        {% sw_include '@Storefront/storefront/component/checkout/group/box-card-group-select.html.twig' %}
+                                    </div>
+                                {% endblock %}
+                            {% endfor %}
+                        </form>
+                    </div>
+                {% endif %}
+            {% endblock %}
+
+        {% endif %}
+    {% endblock %}
+{% endblock %}

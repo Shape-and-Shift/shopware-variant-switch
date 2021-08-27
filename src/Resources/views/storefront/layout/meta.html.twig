@@ -1,0 +1,9 @@
+{% sw_extends '@Storefront/storefront/layout/meta.html.twig' %}
+
+{% block layout_head_javascript_feature %}
+    {{ parent() }}
+
+    {% block sas_layout_head_javascript_variant_switch %}
+        {% sw_include '@Storefront/storefront/layout/variant-switch-config.html.twig' %}
+    {% endblock %}
+{% endblock %}

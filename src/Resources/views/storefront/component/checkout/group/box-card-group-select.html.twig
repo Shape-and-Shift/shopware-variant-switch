@@ -1,0 +1,27 @@
+{% block component_offcanvas_product_details_variant_switch_configurator_group_select %}
+    {% block component_offcanvas_product_details_variant_switch_configurator_group_select_title %}
+        <label class="sas-product-configurator-group-title" for="{{ group.id }}">
+            {% block component_offcanvas_product_details_variant_switch_configurator_group_title_text %}
+                {{ group.translated.name }}
+            {% endblock %}
+        </label>
+        {% block component_offcanvas_product_details_variant_switch_configurator_select %}
+            <select id="{{ group.id }}" name="options[{{ group.id }}]" class="custom-select js-offcanvas-cart-switch-option sas-product-configurator-select-input">
+                {% for option in group.options %}
+
+                    {% set selected = false %}
+
+                    {% if option.id in optionIds %}
+                        {% set selected = true %}
+                    {% endif %}
+
+                    {% block component_offcanvas_product_details_variant_switch_configurator_select_option %}
+                        <option value="{{ option.id }}"{% if selected %} selected="selected"{% endif %}>
+                            {{ option.translated.name }}
+                        </option>
+                    {% endblock %}
+                {% endfor %}
+            </select>
+        {% endblock %}
+    {% endblock %}
+{% endblock %}

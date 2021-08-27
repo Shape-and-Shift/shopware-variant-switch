@@ -1,0 +1,27 @@
+{% block component_product_box_configurator_group_select %}
+    {% block component_product_box_configurator_group_select_title %}
+        <label class="sas-product-configurator-group-title" for="{{ group.id }}">
+            {% block component_product_box_configurator_group_title_text %}
+                {{ group.translated.name }}
+            {% endblock %}
+        </label>
+        {% block component_product_box_configurator_select %}
+            <select data-name="{{ group.id }}" data-url="{{ url('sas.frontend.variant.switch', {'productId': product.parentId}) }}" name="{{ groupIdentifier }}" id="{{ group.id }}" class="custom-select sas-product-configurator-select-input">
+                {% for option in group.options %}
+
+                    {% set selected = false %}
+
+                    {% if option.id in product.optionIds %}
+                        {% set selected = true %}
+                    {% endif %}
+
+                    {% block component_product_box_configurator_select_option %}
+                        <option value="{{ option.id }}"{% if selected %} selected="selected"{% endif %}>
+                            {{ option.translated.name }}
+                        </option>
+                    {% endblock %}
+                {% endfor %}
+            </select>
+        {% endblock %}
+    {% endblock %}
+{% endblock %}

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/shopware/platform/master/src/Core/System/SystemConfig/Schema/config.xsd">
+    <card>
+        <title>Variant Switch Configuration</title>
+        <title lang="de-DE">Variante Schalterkonfiguration</title>
+
+        <input-field type="bool">
+            <name>showOnProductCard</name>
+            <label>Show on product listing card</label>
+            <label lang="de-DE">Auf der Produktliste anzeigen</label>
+            <defaultValue>true</defaultValue>
+        </input-field>
+
+        <input-field type="bool">
+            <name>previewVariantOnHover</name>
+            <label>Variant switch when hovering a variant property on product listing</label>
+            <label lang="de-DE">Variantenwechsel beim Hovern über eine Varianteneigenschaft auf der Produktliste</label>
+            <defaultValue>true</defaultValue>
+        </input-field>
+
+        <input-field type="bool">
+            <name>showOnOffCanvasCart</name>
+            <label>Show on off-canvas cart</label>
+            <label lang="de-DE">Auf dem Off-Canvas-Wagen anzeigen</label>
+            <defaultValue>true</defaultValue>
+        </input-field>
+
+        <input-field type="bool">
+            <name>showOnCartPage</name>
+            <label>Show on cart page</label>
+            <label lang="de-DE">Auf der Warenkorb-Seite anzeigen</label>
+            <defaultValue>true</defaultValue>
+        </input-field>
+
+        <input-field type="bool">
+            <name>showOnCheckoutConfirmPage</name>
+            <label>Show on checkout confirm page</label>
+            <label lang="de-DE">Auf der Seite "Kasse bestätigen" anzeigen</label>
+            <defaultValue>true</defaultValue>
+        </input-field>
+
+    </card>
+</config>

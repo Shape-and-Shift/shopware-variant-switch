@@ -1,0 +1,21 @@
+<script>
+    {% if config('SasVariantSwitch.config.showOnProductCard') %}
+    window.sasShowOnProductCard = true;
+    {% endif %}
+
+    {% if config('SasVariantSwitch.config.previewVariantOnHover') %}
+    window.sasPreviewVariantOnHover = true;
+    {% endif %}
+
+    {% if config('SasVariantSwitch.config.showOnOffCanvasCart') %}
+    window.sasShowOnOffCanvasCart = true;
+    {% endif %}
+
+    {% if config('SasVariantSwitch.config.showOnCartPage') %}
+    window.sasShowOnCartPage = true;
+    {% endif %}
+
+    {% if config('SasVariantSwitch.config.showOnCheckoutConfirmPage') %}
+    window.sasShowOnCheckoutConfirmPage = true;
+    {% endif %}
+</script>
