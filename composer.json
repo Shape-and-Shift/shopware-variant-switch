@@ -17,7 +17,7 @@
     ],
     "autoload":{
         "psr-4":{
-            "SasVariantSwitch\\":"src"
+            "SasVariantSwitch\\":"src/"
         }
     },
     "require":{
