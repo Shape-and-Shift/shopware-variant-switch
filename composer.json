@@ -1,28 +1,48 @@
 {
-  "name": "sas/variant-switch",
-  "description": "Variant switch",
-  "type": "shopware-platform-plugin",
-  "license": "MIT",
-  "autoload": {
-    "psr-4": {
-      "SasVariantSwitch\\": "src"
-    }
-  },
-  "require": {
-    "shopware/core": "^6.3",
-    "shopware/storefront": "^6.3"
-  },
-  "extra": {
-    "shopware-plugin-class": "SasVariantSwitch\\SasVariantSwitch",
-    "plugin-icon": "src/Resources/config/plugin.png",
-    "copyright": "(c) by Thuong Le<levienthuong@gmail.com>",
-    "description": {
-      "de-DE": "Schnellwechsel der Produktvariante",
-      "en-GB": "Quick switch product's variant"
+    "name":"sas/variant-switch",
+    "description":"Show a variant switch within the listing and cart",
+    "type":"shopware-platform-plugin",
+    "license":"MIT",
+    "version":"1.0.0",
+    "keywords":[
+        "variant",
+        "shopware"
+    ],
+    "authors":[
+        {
+            "name":"Shape & Shift",
+            "role":"Manufacturer",
+            "homepage":"https://shapeandshift.dev"
+        }
+    ],
+    "autoload":{
+        "psr-4":{
+            "SasVariantSwitch\\":"src"
+        }
     },
-    "label": {
-      "de-DE": "Variant Schalter",
-      "en-GB": "Variant switch"
+    "require":{
+        "shopware/core":"^6.4",
+        "shopware/storefront":"^6.4"
+    },
+    "extra":{
+        "shopware-plugin-class":"SasVariantSwitch\\SasVariantSwitch",
+        "plugin-icon":"src/Resources/config/plugin.png",
+        "copyright":"(c) by Shape & Shift",
+        "description":{
+            "de-DE":"Schnellwechsel der Produktvariante im Listing als auch im Warenkorb",
+            "en-GB":"Show a variant switch within the listing and cart"
+        },
+        "label":{
+            "de-DE":"Varianten switch im Listing",
+            "en-GB":"Variant switch within the Listing"
+        },
+        "manufacturerLink":{
+            "en-GB":"https://shapeandshift.dev",
+            "de-DE":"https://shapeandshift.dev"
+        },
+        "supportLink":{
+            "de-DE":"https://shapeandshift.dev",
+            "en-GB":"https://shapeandshift.dev"
+        }
     }
-  }
 }
