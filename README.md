@@ -2,6 +2,10 @@
 
 ## A plugin for [Shopware 6](https://github.com/shopware/platform)
 
+<a href="https://www.youtube.com/watch?v=sko0ZC6nm28" target="_blank">
+<img width="898" alt="Bildschirmfoto 2021-09-21 um 08 51 52" src="https://user-images.githubusercontent.com/8193345/134118822-f508dc08-f63d-452e-a36f-e746f1870d1e.png">
+</a>
+
 ![](https://res.cloudinary.com/dtgdh7noz/image/upload/v1632203279/Bildschirmfoto_2021-09-21_um_08.47.31_ceglal.png)
 
 ![](https://res.cloudinary.com/dtgdh7noz/image/upload/v1632203334/Bildschirmfoto_2021-09-21_um_08.48.46_pn6mjv.png)
