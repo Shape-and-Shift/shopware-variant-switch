@@ -2,11 +2,7 @@
 
 ## A plugin for [Shopware 6](https://github.com/shopware/platform)
 
-## [Demo](https://imgur.com/gallery/FGEqepO): 
-
-![](https://media.giphy.com/media/jPe0KX39d0oT5sxtqR/giphy.gif)
-
-![](https://i.imgur.com/H5ndVwE.png)
+![](https://res.cloudinary.com/dtgdh7noz/image/upload/v1632203279/Bildschirmfoto_2021-09-21_um_08.47.31_ceglal.png)
 
 ## Features
 
