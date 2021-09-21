@@ -4,6 +4,8 @@
 
 ![](https://res.cloudinary.com/dtgdh7noz/image/upload/v1632203279/Bildschirmfoto_2021-09-21_um_08.47.31_ceglal.png)
 
+![](https://res.cloudinary.com/dtgdh7noz/image/upload/v1632203334/Bildschirmfoto_2021-09-21_um_08.48.46_pn6mjv.png)
+
 ## Features
 
 - Show variant switch on product listing card
