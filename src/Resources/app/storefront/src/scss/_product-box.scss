@@ -5,10 +5,16 @@
     }
 }
 
+.sas-product-configurator-offcanvas-wrapper {
+    margin-bottom: $spacer-md;
+    border-bottom: 1px solid $border-color;
+}
+
 .sas-product-configurator-group {
     margin-bottom: $spacer-md;
     display: inline-block;
     margin-right: 5px;
+    width: 100%;
 
     .custom-select {
         width: auto;
@@ -18,6 +24,7 @@
 .sas-product-configurator-group-title {
     font-weight: $font-weight-bold;
     margin-bottom: $spacer-sm;
+    display: block;
 }
 
 .sas-product-configurator-options {

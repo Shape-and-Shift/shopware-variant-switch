@@ -14,7 +14,7 @@
                 {% set optionIds = lineItem.payload.optionIds %}
                 {% set parentId = lineItem.payload.parentId %}
 
-                <div data-wrapper-id="sas-product-configurator-group-wrapper-{{ lineItem.referencedId }}" data-variant-cart-switch="true">
+                <div class="sas-product-configurator-offcanvas-wrapper" data-wrapper-id="sas-product-configurator-group-wrapper-{{ lineItem.referencedId }}" data-variant-cart-switch="true">
                     <form action="{{ path('sas.frontend.lineItem.variant.switch', {'id': lineItem.id}) }}" method="post">
 
                         {% block component_offcanvas_product_details_variant_switch_form_csrf %}
