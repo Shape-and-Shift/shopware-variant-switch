@@ -11,7 +11,6 @@
 </a>
 
 ## Features
-
 - Show variant switch on product listing card
 - Variant switch when hovering a variant property on product listing
 - Show variant switch on off-canvas cart
@@ -21,9 +20,9 @@
 
 ## Requirements
 
-| Version 	| Requirements               	|
-|---------	|----------------------------	|
-| 1.0.0    	| Shopware 6.4 >=	            |
+| Version 	  | Requirements               	|
+|------------|----------------------------	|
+| 1.1.0    	 | Shopware 6.4 >=	            |
 
 ## License
     

@@ -3,10 +3,10 @@
 namespace SasVariantSwitch\Storefront\Page;
 
 use Doctrine\DBAL\Connection;
+use Shopware\Core\Content\Product\Aggregate\ProductConfiguratorSetting\ProductConfiguratorSettingCollection;
 use Shopware\Core\Content\Product\Aggregate\ProductConfiguratorSetting\ProductConfiguratorSettingEntity;
 use Shopware\Core\Content\Product\ProductCollection;
 use Shopware\Core\Content\Product\SalesChannel\Detail\AvailableCombinationResult;
-use Shopware\Core\Content\Product\SalesChannel\Detail\ProductConfiguratorLoader;
 use Shopware\Core\Content\Product\SalesChannel\SalesChannelProductEntity;
 use Shopware\Core\Content\Property\Aggregate\PropertyGroupOption\PropertyGroupOptionCollection;
 use Shopware\Core\Content\Property\Aggregate\PropertyGroupOption\PropertyGroupOptionEntity;
@@ -36,11 +36,7 @@ class ProductListingConfigurationLoader
 
     public function loadListing(ProductCollection $products, SalesChannelContext $context): void
     {
-        $productSettings = $this->loadSettings($products, $context);
-
-        if (empty($productSettings)) {
-            return;
-        }
+        $settings = $this->fetchSettings($products, $context->getContext());
 
         $productIds = array_filter($products->map(function (SalesChannelProductEntity $product) {
             return $product->getParentId() ?? $product->getId();
@@ -50,13 +46,17 @@ class ProductListingConfigurationLoader
 
         /** @var SalesChannelProductEntity $product */
         foreach ($products as $product) {
+            $productSettings = $this->loadSettings(clone $settings);
+
             if ($product->getConfiguratorSettings() !== null || !$product->getParentId() || empty($productSettings[$product->getParentId()])) {
                 $product->addExtension('groups', new PropertyGroupCollection());
 
                 continue;
             }
 
-            $groups = $this->sortSettings($productSettings[$product->getParentId()], $product);
+            $productSetting = $productSettings[$product->getParentId()];
+
+            $groups = $this->sortSettings($productSetting, $product);
 
             $combinations = $allCombinations[$product->getParentId()];
 
@@ -75,6 +75,7 @@ class ProductListingConfigurationLoader
 
                         continue;
                     }
+
                     $option->setGroup(null);
 
                     $option->setCombinable($combinable);
@@ -126,18 +127,17 @@ class ProductListingConfigurationLoader
         }
 
         foreach ($allCombinations as $parentId => $groupedCombinations) {
-            $available = [];
-
-            foreach ($groupedCombinations as $combination) {
-                $combination['options'] = json_decode($combination['options'], true);
-
-                $available[] = $combination;
-            }
-
             $result = new AvailableCombinationResult();
 
-            foreach ($available as $combination) {
-                $result->addCombination($combination['options']);
+            foreach ($groupedCombinations as $combination) {
+                $available = (bool) $combination['available'];
+
+                $options = json_decode($combination['options'], true);
+                if ($options === false) {
+                    continue;
+                }
+
+                $result->addCombination($options, $available);
             }
 
             $allCombinations[$parentId] = $result;
@@ -146,12 +146,11 @@ class ProductListingConfigurationLoader
         return $allCombinations;
     }
 
-    private function loadSettings(ProductCollection $products, SalesChannelContext $context): ?array
+    private function fetchSettings(ProductCollection $products, Context $context): ProductConfiguratorSettingCollection
     {
-        $allSettings = [];
         $criteria = (new Criteria())->addFilter(
             new EqualsAnyFilter('productId', $products->map(function (SalesChannelProductEntity $product) {
-                      return $product->getParentId() ?? $product->getId();
+                return $product->getParentId() ?? $product->getId();
             }))
         );
 
@@ -159,9 +158,23 @@ class ProductListingConfigurationLoader
             ->addAssociation('option.media')
             ->addAssociation('media');
 
+        /**
+         * @var ProductConfiguratorSettingCollection $settings
+         */
         $settings = $this->configuratorRepository
-            ->search($criteria, $context->getContext())
+            ->search($criteria, $context)
             ->getEntities();
+
+        if ($settings->count() <= 0) {
+            return new ProductConfiguratorSettingCollection();
+        }
+
+        return $settings;
+    }
+
+    private function loadSettings(ProductConfiguratorSettingCollection $settings): ?array
+    {
+        $allSettings = [];
 
         if ($settings->count() <= 0) {
             return null;
@@ -172,13 +185,12 @@ class ProductListingConfigurationLoader
             $productId = $setting->getProductId();
 
             if (\array_key_exists($productId, $allSettings)) {
-                $allSettings[$productId][] = clone $setting;
+                $allSettings[$productId][] = ProductConfiguratorSettingEntity::createFrom($setting);
             } else {
-                $allSettings[$productId] = [clone $setting];
+                $allSettings[$productId] = [ProductConfiguratorSettingEntity::createFrom($setting)];
             }
         }
 
-        /** @var ProductConfiguratorSettingEntity $setting */
         foreach ($allSettings as $productId => $settings) {
             $groups = [];
 
@@ -265,6 +277,14 @@ class ProductListingConfigurationLoader
             $collection->sortByPositions();
 
             return $collection;
+        } else if ($product->getMainVariantId() === null) {
+            foreach ($config as $item) {
+                if (\array_key_exists('expressionForListings', $item) && $item['expressionForListings'] && $collection->has($item['id'])) {
+                    $collection->get($item['id'])->assign([
+                        'hideOnListing' => true,
+                    ]);
+                }
+            }
         }
 
         $sortedGroupIds = array_column($config, 'id');
@@ -286,7 +306,7 @@ class ProductListingConfigurationLoader
         $current[] = $option->getId();
 
         // available with all other current selected options
-        if ($combinations->hasCombination($current)) {
+        if ($combinations->hasCombination($current) && $combinations->isAvailable($current)) {
             return true;
         }
 

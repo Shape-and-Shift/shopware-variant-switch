@@ -19,6 +19,10 @@
     .custom-select {
         width: auto;
     }
+
+    &-d-none {
+        display: none!important;
+    }
 }
 
 .sas-product-configurator-group-title {

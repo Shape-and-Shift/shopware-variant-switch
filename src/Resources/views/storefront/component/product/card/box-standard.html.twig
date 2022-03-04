@@ -13,9 +13,11 @@
                 {% if product.extensions.groups %}
                     <div data-wrapper-id="sas-product-configurator-group-wrapper-{{ product.id }}" data-variant-hover-switch="true" data-variant-hover-switch-options="{{ variantHoverSwitchOptions|json_encode }}">
                         {% for group in product.extensions.groups %}
+                            {% set hideOnListing = group.hideOnListing is defined and group.hideOnListing == true %}
+
                             {% set groupIdentifier = [product.id, group.id]|join('-') %}
                             {% block page_product_detail_configurator_group %}
-                                <div class="sas-product-configurator-group">
+                                <div class="sas-product-configurator-group {% if hideOnListing %}sas-product-configurator-group-d-none{% endif %}">
                                     {% if group.displayType == 'select' %}
                                         {% sw_include '@Storefront/storefront/component/product/card/group/box-card-group-select.html.twig' %}
                                     {% else %}
@@ -27,7 +29,6 @@
                     </div>
                 {% endif %}
             {% endblock %}
-
         {% endblock %}
     {% endif %}
 {% endblock %}
