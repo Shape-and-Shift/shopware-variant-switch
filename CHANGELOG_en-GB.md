@@ -1,6 +1,7 @@
 # 1.1.0 - Enhancement
 - [Issue #1](https://github.com/Shape-and-Shift/shopware-variant-switch/issues/1) Show also variants which are out of stock
 - [Issue #2](https://github.com/Shape-and-Shift/shopware-variant-switch/issues/2) Hide split variants
+- [Issue #6](https://github.com/Shape-and-Shift/shopware-variant-switch/issues/6) Ignored the product don't have combinable
 
 # 1.0.0 - First release
 - Show variant switch on product listing card
