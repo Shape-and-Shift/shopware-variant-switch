@@ -43,6 +43,9 @@ class ProductListingConfigurationLoader
         }));
 
         $allCombinations = $this->loadCombinations($productIds, $context->getContext());
+        if (\count($allCombinations) === 0) {
+            return;
+        }
 
         /** @var SalesChannelProductEntity $product */
         foreach ($products as $product) {
@@ -57,6 +60,10 @@ class ProductListingConfigurationLoader
             $productSetting = $productSettings[$product->getParentId()];
 
             $groups = $this->sortSettings($productSetting, $product);
+
+            if (!array_key_exists($product->getParentId(), $allCombinations)) {
+                continue;
+            }
 
             $combinations = $allCombinations[$product->getParentId()];
 
