@@ -121,9 +121,11 @@ class CartPageLoadedSubscriber implements EventSubscriberInterface
             if ($product->getExtension('groups') !== null) {
                 $lineItem = $lineItems->get($product->getId());
 
-                $lineItem->addExtension('groups', $product->getExtension('groups'));
-                $lineItem->setPayloadValue('parentId', $product->getParentId());
-                $lineItem->setPayloadValue('optionIds', $product->getOptionIds());
+                if (null !== $lineItem) {
+                    $lineItem->addExtension('groups', $product->getExtension('groups'));
+                    $lineItem->setPayloadValue('parentId', $product->getParentId());
+                    $lineItem->setPayloadValue('optionIds', $product->getOptionIds());
+                }
             }
         }
     }
