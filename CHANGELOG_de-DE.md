@@ -1,3 +1,7 @@
+# 1.1.1 - Bugfix
+
+- [Issue #9](https://github.com/Shape-and-Shift/shopware-variant-switch/issues/9)] Positionen ohne valide Line-Items werden übersprungen
+
 # 1.1.0 - Erweiterung
 - [Issue #1](https://github.com/Shape-and-Shift/shopware-variant-switch/issues/1) Zeige auch Varianten, die nicht auf Lager sind
 - [Issue #2](https://github.com/Shape-and-Shift/shopware-variant-switch/issues/2) Ausblenden von geteilten Varianten
