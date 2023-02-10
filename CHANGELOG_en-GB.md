@@ -1,3 +1,7 @@
+# 1.1.1 - Bugfix
+
+- [Issue #9](https://github.com/Shape-and-Shift/shopware-variant-switch/issues/9)] Carts-items without valid line items will be skipped
+
 # 1.1.0 - Enhancement
 - [Issue #1](https://github.com/Shape-and-Shift/shopware-variant-switch/issues/1) Show also variants which are out of stock
 - [Issue #2](https://github.com/Shape-and-Shift/shopware-variant-switch/issues/2) Hide split variants
