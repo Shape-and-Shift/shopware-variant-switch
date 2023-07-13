@@ -6,7 +6,7 @@
             {% endblock %}
         </label>
         {% block component_product_box_configurator_select %}
-            <select data-name="{{ group.id }}" data-url="{{ url('sas.frontend.variant.switch', {'productId': product.parentId}) }}" name="{{ groupIdentifier }}" id="{{ group.id }}" class="custom-select sas-product-configurator-select-input">
+            <select data-name="{{ group.id }}" data-url="{{ url('sas.frontend.variant.switch', {'productId': product.parentId ?? product.id }) }}" name="{{ groupIdentifier }}" id="{{ group.id }}" class="custom-select sas-product-configurator-select-input">
                 {% for option in group.options %}
 
                     {% set selected = false %}

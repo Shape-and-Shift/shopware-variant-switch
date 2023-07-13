@@ -50,22 +50,22 @@ class ProductListingConfigurationLoader
         /** @var SalesChannelProductEntity $product */
         foreach ($products as $product) {
             $productSettings = $this->loadSettings(clone $settings);
+            $parentId = $product->getParentId() ?? $product->getId();
 
-            if ($product->getConfiguratorSettings() !== null || !$product->getParentId() || empty($productSettings[$product->getParentId()])) {
+            if ($product->getConfiguratorSettings() !== null || empty($productSettings[$parentId])) {
+
                 $product->addExtension('groups', new PropertyGroupCollection());
-
                 continue;
             }
 
-            $productSetting = $productSettings[$product->getParentId()];
-
+            $productSetting = $productSettings[$parentId];
             $groups = $this->sortSettings($productSetting, $product);
 
-            if (!array_key_exists($product->getParentId(), $allCombinations)) {
+            if (!array_key_exists($parentId, $allCombinations)) {
                 continue;
             }
 
-            $combinations = $allCombinations[$product->getParentId()];
+            $combinations = $allCombinations[$parentId];
 
             $current = $this->buildCurrentOptions($product, $groups);
 
@@ -330,15 +330,16 @@ class ProductListingConfigurationLoader
         $keyMap = $groups->getOptionIdMap();
 
         $current = [];
-        foreach ($product->getOptionIds() as $optionId) {
-            $groupId = $keyMap[$optionId] ?? null;
-            if ($groupId === null) {
-                continue;
+        if (null !== $optionIds = $product->getOptionIds()) {
+            foreach ($optionIds as $optionId) {
+                $groupId = $keyMap[$optionId] ?? null;
+                if ($groupId === null) {
+                    continue;
+                }
+
+                $current[$groupId] = $optionId;
             }
-
-            $current[$groupId] = $optionId;
         }
-
         return $current;
     }
 }

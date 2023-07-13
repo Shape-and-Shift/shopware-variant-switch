@@ -44,7 +44,7 @@
                                    value="{{ option.id }}"
                                    class="sas-product-configurator-option-input{% if isCombinableCls %} {{ isCombinableCls }}{% endif %}"
                                    title="{{ optionIdentifier }}"
-                                   data-url="{{ url('sas.frontend.variant.switch', {'productId': product.parentId}) }}"
+                                   data-url="{{ url('sas.frontend.variant.switch', {'productId': product.parentId ?? product.id}) }}"
                                    id="{{ optionIdentifier }}"
                                    {% if isActive %}checked="checked"{% endif %}>
 
