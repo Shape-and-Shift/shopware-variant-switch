@@ -4,6 +4,7 @@ namespace SasVariantSwitch\Subscriber;
 
 use SasVariantSwitch\SasVariantSwitch;
 use Shopware\Core\Content\Product\Events\ProductListingResultEvent;
+use Shopware\Core\Content\Product\Events\ProductSearchResultEvent;
 use Shopware\Core\Content\Product\ProductCollection;
 use Shopware\Core\System\SystemConfig\SystemConfigService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -28,6 +29,9 @@ class ProductListingResultLoadedSubscriber implements EventSubscriberInterface
         return [
             // 'sales_channel.product.loaded' => 'handleProductListingLoadedRequest',
             ProductListingResultEvent::class => [
+                ['handleProductListingLoadedRequest', 201],
+            ],
+            ProductSearchResultEvent::class => [
                 ['handleProductListingLoadedRequest', 201],
             ],
             ProductBoxLoadedEvent::class => [
