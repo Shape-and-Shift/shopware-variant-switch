@@ -70,9 +70,9 @@
                                                 }
                                             } %}
                                         {% endblock %}
-                                    {% elseif displayType == 'text' or
-                                        (displayType == 'media' and not media) or
-                                        (displayType == 'color' and not option.colorHexCode) %}
+                                    {% elseif (displayType == 'color' and option.colorHexCode) %}
+                                        {# nothing to do #}
+                                    {% else %}
                                         {% block component_product_box_configurator_option_radio_label_text %}
                                             {{ option.translated.name }}
                                         {% endblock %}
