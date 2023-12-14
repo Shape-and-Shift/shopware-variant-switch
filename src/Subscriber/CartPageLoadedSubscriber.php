@@ -8,7 +8,7 @@ use Shopware\Core\Checkout\Cart\LineItem\LineItemCollection;
 use Shopware\Core\Content\Product\ProductCollection;
 use Shopware\Core\Content\Product\SalesChannel\SalesChannelProductEntity;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
-use Shopware\Core\System\SalesChannel\Entity\SalesChannelRepositoryInterface;
+use Shopware\Core\System\SalesChannel\Entity\SalesChannelRepository;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Core\System\SystemConfig\SystemConfigService;
 use Shopware\Storefront\Page\Checkout\Cart\CheckoutCartPageLoadedEvent;
@@ -20,11 +20,11 @@ use SasVariantSwitch\Storefront\Page\ProductListingConfigurationLoader;
 class CartPageLoadedSubscriber implements EventSubscriberInterface
 {
     private ProductListingConfigurationLoader $listingConfigurationLoader;
-    private SalesChannelRepositoryInterface $productRepository;
+    private SalesChannelRepository $productRepository;
     private SystemConfigService $systemConfigService;
 
     public function __construct(
-        SalesChannelRepositoryInterface $productRepository,
+        SalesChannelRepository $productRepository,
         ProductListingConfigurationLoader $listingConfigurationLoader,
         SystemConfigService $systemConfigService
     ) {

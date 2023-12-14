@@ -21,10 +21,6 @@
                     <div data-wrapper-id="sas-product-configurator-group-wrapper-{{ lineItem.referencedId }}" data-variant-cart-switch="true">
                         <form action="{{ path('sas.frontend.lineItem.variant.switch', {'id': lineItem.id}) }}" method="post" data-form-auto-submit="true">
 
-                            {% block page_checkout_item_info_features_variant_switch_form_csrf %}
-                                {{ sw_csrf('sas.frontend.lineItem.variant.switch') }}
-                            {% endblock %}
-
                             {% block page_checkout_item_quantity_redirect %}
                                 <input type="hidden"
                                        name="redirectTo"

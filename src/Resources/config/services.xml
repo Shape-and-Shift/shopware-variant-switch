@@ -24,13 +24,16 @@
         </service>
 
         <service id="SasVariantSwitch\Storefront\Controller\VariantSwitchController" public="true">
-            <argument type="service" id="Shopware\Storefront\Page\Product\Configurator\ProductCombinationFinder"/>
+            <argument type="service" id="Shopware\Core\Content\Product\SalesChannel\FindVariant\FindProductVariantRoute"/>
             <argument type="service" id="sales_channel.product.repository"/>
             <argument type="service" id="Shopware\Core\Checkout\Cart\SalesChannel\CartService"/>
             <argument type="service" id="Shopware\Core\Checkout\Cart\LineItemFactoryRegistry"/>
             <argument type="service" id="event_dispatcher"/>
             <call method="setContainer">
                 <argument type="service" id="service_container"/>
+            </call>
+            <call method="setTwig">
+                <argument type="service" id="twig"/>
             </call>
         </service>
     </services>
