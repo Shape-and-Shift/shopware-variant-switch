@@ -13,31 +13,29 @@ use Shopware\Core\Content\Product\Exception\ProductNotFoundException;
 use Shopware\Core\Content\Product\SalesChannel\Sorting\ProductSortingCollection;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\Routing\Annotation\RouteScope;
-use Shopware\Core\System\SalesChannel\Entity\SalesChannelRepositoryInterface;
+use Shopware\Core\System\SalesChannel\Entity\SalesChannelRepository;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Storefront\Controller\StorefrontController;
 use Shopware\Storefront\Framework\Cache\Annotation\HttpCache;
-use Shopware\Storefront\Page\Product\Configurator\ProductCombinationFinder;
+use Shopware\Core\Content\Product\SalesChannel\FindVariant\FindProductVariantRoute;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use SasVariantSwitch\Storefront\Event\ProductBoxLoadedEvent;
 
-/**
- * @RouteScope(scopes={"storefront"})
- */
+#[Route(defaults: ['_routeScope' => ['storefront']])]
 class VariantSwitchController extends StorefrontController
 {
-    private ProductCombinationFinder $combinationFinder;
-    private SalesChannelRepositoryInterface $productRepository;
+    private FindProductVariantRoute $combinationFinder;
+    private SalesChannelRepository $productRepository;
     private CartService $cartService;
     private LineItemFactoryRegistry $lineItemFactory;
     private EventDispatcherInterface $dispatcher;
 
     public function __construct(
-        ProductCombinationFinder $combinationFinder,
-        SalesChannelRepositoryInterface $productRepository,
+        FindProductVariantRoute $combinationFinder,
+        SalesChannelRepository $productRepository,
         CartService $cartService,
         LineItemFactoryRegistry $lineItemFactory,
         EventDispatcherInterface $dispatcher
@@ -49,10 +47,7 @@ class VariantSwitchController extends StorefrontController
         $this->lineItemFactory = $lineItemFactory;
     }
 
-    /**
-     * @HttpCache
-     * @Route("/sas/line-item/switch-variant/{id}", name="sas.frontend.lineItem.variant.switch", methods={"POST"}, defaults={"XmlHttpRequest": true})
-     */
+    #[Route(path: '/sas/line-item/switch-variant/{id}', name: 'sas.frontend.lineItem.variant.switch', defaults: ['XmlHttpRequest' => true], methods: ['POST'])]
     public function switchLineItemVariant(Cart $cart, string $id, Request $request, SalesChannelContext $context): Response
     {
         try {
@@ -81,9 +76,14 @@ class VariantSwitchController extends StorefrontController
             $switchedOption = $request->query->has('switched') ? (string) $request->query->get('switched') : null;
 
             try {
-                $redirect = $this->combinationFinder->find($productId, $switchedOption, $options, $context);
+                $redirect = $this->combinationFinder->load($productId, new Request(
+                    [
+                        'switchedGroup' => $switchedOption,
+                        'options' => $options,
+                    ]
+                ), $context);
 
-                $productId = $redirect->getVariantId();
+                $productId = $redirect->getFoundCombination()->getVariantId();
             } catch (ProductNotFoundException $productNotFoundException) {
                 //nth
 
@@ -131,10 +131,7 @@ class VariantSwitchController extends StorefrontController
         return $this->createActionResponse($request);
     }
 
-    /**
-     * @HttpCache
-     * @Route("/sas/switch-variant/{productId}", name="sas.frontend.variant.switch", methods={"GET"}, defaults={"XmlHttpRequest": true})
-     */
+    #[Route(path: '/sas/switch-variant/{productId}', name: 'sas.frontend.variant.switch', defaults: ['XmlHttpRequest' => true], methods: ['GET'])]
     public function switchVariant(string $productId, Request $request, SalesChannelContext $context): Response
     {
         $switchedOption = $request->query->has('switched') ? (string) $request->query->get('switched') : null;
@@ -145,9 +142,14 @@ class VariantSwitchController extends StorefrontController
         $newOptions = $options !== '' ? json_decode($options, true) : [];
 
         try {
-            $redirect = $this->combinationFinder->find($productId, $switchedOption, $newOptions, $context);
+            $redirect = $this->combinationFinder->load($productId, new Request(
+                [
+                    'switchedGroup' => $switchedOption,
+                    'options' => $newOptions,
+                ]
+            ), $context);
 
-            $productId = $redirect->getVariantId();
+            $productId = $redirect->getFoundCombination()->getVariantId();
         } catch (ProductNotFoundException $productNotFoundException) {
             //nth
 

@@ -15,7 +15,7 @@ use Shopware\Core\Content\Property\PropertyGroupDefinition;
 use Shopware\Core\Content\Property\PropertyGroupEntity;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\Doctrine\FetchModeHelper;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsAnyFilter;
 use Shopware\Core\Framework\Uuid\Uuid;
@@ -23,11 +23,11 @@ use Shopware\Core\System\SalesChannel\SalesChannelContext;
 
 class ProductListingConfigurationLoader
 {
-    private EntityRepositoryInterface $configuratorRepository;
+    private EntityRepository $configuratorRepository;
     private Connection $connection;
 
     public function __construct(
-        EntityRepositoryInterface $configuratorRepository,
+        EntityRepository $configuratorRepository,
         Connection $connection
     ) {
         $this->configuratorRepository = $configuratorRepository;
@@ -279,12 +279,15 @@ class ProductListingConfigurationLoader
         $collection = new PropertyGroupCollection($sorted);
 
         // check if product has an individual sorting configuration for property groups
-        $config = $product->getConfiguratorGroupConfig();
+        $config = $product->getVariantListingConfig();
+        if($config) {
+            $config = $config->getConfiguratorGroupConfig();
+        }
         if (!$config) {
             $collection->sortByPositions();
 
             return $collection;
-        } else if ($product->getMainVariantId() === null) {
+        } elseif (($listingConfig = $product->getVariantListingConfig()) && $listingConfig->getMainVariantId() === null) {
             foreach ($config as $item) {
                 if (\array_key_exists('expressionForListings', $item) && $item['expressionForListings'] && $collection->has($item['id'])) {
                     $collection->get($item['id'])->assign([
